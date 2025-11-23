@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from rk4_ndim import rk4_ndim
 from rk4_modified import rk4_modified
 import random
+from matplotlib.gridspec import GridSpec
 
 # ------
 # Lorenz 
@@ -39,12 +40,19 @@ lorenz_modified = lambda t , x : np.array([
 X1 , X2, errors, t = rk4_modified(lorenz, lorenz_modified, y1_0, y2_0, t0, T, dt)
 # X , t = rk4_ndim(lorenz, y0, t0, T, dt)
 
-fig = plt.figure()
-ax = fig.add_subplot(projection = '3d')
-ax.plot(X1[0,:], X1[1,:], X1[2,:])
-ax.plot(X2[0,:], X2[1,:], X2[2,:], color='green')
-ax.plot(errors[0,:], errors[1,:], errors[2,:], color='red')
+fig = plt.figure(figsize=(8, 16)) # 1x2
+gs = GridSpec(1, 2, figure=fig) # actual layout
 
-#plt.title("rho = " + str(rho))
-ax.set_xlabel('x'); ax.set_ylabel('y'); ax.set_zlabel('z')
+# first row = 3d plots
+fig = plt.figure()
+ax1 = fig.add_subplot(gs[0, 0], projection='3d')
+ax1.plot(X1[0,:], X1[1,:], X1[2,:])
+ax1.plot(X2[0,:], X2[1,:], X2[2,:], color='green')
+ax1.set_xlabel('x'); ax.set_ylabel('y'); ax.set_zlabel('z')
+
+# second row = error
+ax2 = fig.add_subplot(gs[1, 0])
+ax2.plot(t, errors, color='red')
+ax2.set_xlabel('t'); ax2.set_ylabel('error(t)')
+
 plt.show()
