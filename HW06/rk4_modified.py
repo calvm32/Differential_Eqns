@@ -31,6 +31,10 @@ def rk4_modified(f1, f2, y1_0, y2_0, t0, T, dt):
     y2 = np.zeros((3, N), dtype = float)
     y2[:, 0] = y2_0 # Set initial value
 
+    errors = []
+    error = ( (y1[0,0] - y2[0,0])**2 + (y1[1,0] - y2[1,0])**2 + (y1[2,0] - y2[2,0])**2 )**(1/2)
+    errors.append(error) # initial error = diff btwn ics
+
     for n in range(0,N-1):
 
         # solve func 1
@@ -41,12 +45,15 @@ def rk4_modified(f1, f2, y1_0, y2_0, t0, T, dt):
 
         y1[:, n+1] = y1[:, n] + (dt/6)*(k1 + (2*k2) + (2*k3)+k4)
 
-        # solve func 2, reuse names bc oh well
-        k1 = f2(t[n], y2[:, n])
-        k2 = f2(t[n] + dt/2, y2[:, n] + (dt*k1)/2)
-        k3 = f2(t[n] + dt/2, y2[:, n] + (dt*k2)/2)
-        k4 = f2(t[n] + dt, y2[:, n] + (dt*k3))
+        # solve func 2, diff names fixes issue???
+        j1 = f2(t[n], y2[:, n])
+        j2 = f2(t[n] + dt/2, y2[:, n] + (dt*k1)/2)
+        j3 = f2(t[n] + dt/2, y2[:, n] + (dt*k2)/2)
+        j4 = f2(t[n] + dt, y2[:, n] + (dt*k3))
 
-        y2[:, n+1] = y2[:, n] + (dt/6)*(k1 + (2*k2) + (2*k3)+k4)
+        y2[:, n+1] = y2[:, n] + (dt/6)*(j1 + (2*j2) + (2*j3)+j4)
+        
+        error = ( (y1[0,n+1] - y2[0,n+1])**2 + (y1[1,n+1] - y2[1,n+1])**2 + (y1[2,n+1] - y2[2,n+1])**2 )**(1/2)
+        errors.append(error) # there has to be a better way to do this. built-in RMS?
     
-    return y1, y2, t
+    return y1, y2, errors, t
