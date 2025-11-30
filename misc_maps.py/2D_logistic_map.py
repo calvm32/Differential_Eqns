@@ -8,8 +8,8 @@ b = 3
 N = 500 # number of iterations
 
 # ICs in (0,1)
-x = 0.5
-y = 0.5
+x0 = 0.5
+y0 = 0.5
 
 x_list = [] # list of x vals
 y_list = [] # list of y vals
@@ -18,6 +18,7 @@ count_list = [] # folor color mapping
 sin_list = [] # for color mapping comparison
 angles_list = [] # for color mapping comparison
 
+x=x0; y=y0
 for n in range(N):
     x = a*x*(1-x)
     y = b*y*(1-y)
@@ -46,5 +47,7 @@ ax1.set_title("sine map for time comparison")
 ax2 = fig.add_subplot(gs[1, 0])
 ax2.scatter(x_list, y_list, c=count_list, cmap='viridis')
 ax2.set_title("2D logistic map")
+
+fig.suptitle(f"Initial condition = ({x0},{y0}), a={a}, b={b}", fontsize=16, fontweight='bold') # got soln from google ai result
 
 plt.show()
