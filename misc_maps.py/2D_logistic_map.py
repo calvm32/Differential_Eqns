@@ -35,7 +35,7 @@ for n in count_list:
 
 # got this soln from google; also used in previous assignment
 fig = plt.figure()
-gs = GridSpec(2, 1, figure=fig) # actual layout
+gs = GridSpec(2, 1, figure=fig, hspace=0.4) # actual layout
 
 # sine plot
 ax1 = fig.add_subplot(gs[0, 0])
