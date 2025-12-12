@@ -26,11 +26,11 @@ b = random.uniform(-1, 1)
 c = random.uniform(-1, 1)
 
 # random initial value
-y1_0 = np.array([a, b, c])
+y0 = np.array([2, 2, 2])
 
 # constants
 t0 = 0.0                            # initial time
-T = 50                              # final time
+T = 100                              # final time
 dt = 0.01                           # step size
 beta = 8/3; sigma = 10; rho = 28    # parameters
 N = int((T - t0) / dt) + 1          # num steps
@@ -47,11 +47,11 @@ lorenz = lambda t , x : np.array([
 ])
 
 # solve lorenz given conditions
-X , t = rk4_ndim(lorenz, y1_0, t0, T, dt, 3)
+X , t = rk4_ndim(lorenz, y0, t0, T, dt, 3)
 
-# ----
-# Plot
-# ----
+# ------------
+# Plot in time
+# ------------
 
 # Convert solution X w shape (3,N) to shape (N, 1, 3)
 pts = X.T.reshape(-1, 1, 3)
@@ -73,7 +73,7 @@ ax1.grid(True, alpha=0.3)
 ax2 = fig.add_subplot(gs[2, 0], projection='3d')
 
 # add colors
-lc = Line3DCollection(segments, cmap='veridis')
+lc = Line3DCollection(segments, cmap='viridis')
 lc.set_array(x_list[:-1])  # Must be length N-1 for segments
 ax2.add_collection(lc)
 
@@ -92,5 +92,41 @@ fig.suptitle(
     f"Random Initial Condition = ({a:.2f}, {b:.2f}, {c:.2f})",
     fontsize=16, fontweight='bold'
 )
+
+# ------------------------
+# plot in each x,y,z plane
+# ------------------------
+
+fig = plt.figure(figsize=(12, 8)) # 3x2, first row = twice height of bottom
+gs = GridSpec(2, 3, height_ratios=[2, 1], figure=fig) # actual layout
+
+# layout, make first one big
+ax1 = fig.add_subplot(gs[0, :], projection='3d')
+ax1.plot(X[0], X[1], X[2], color='blue')
+ax1.set_xlabel('x')
+ax1.set_ylabel('y')
+ax1.set_zlabel('z')
+ax1.legend()
+
+# x(t) vs t
+ax2 = fig.add_subplot(gs[1, 0])
+ax2.plot(t, X[0], color='#4F783F')
+ax2.set_xlabel('t')
+ax2.set_ylabel('x(t)')
+ax2.set_title('x(t) vs t')
+
+# y(t) vs t
+ax3 = fig.add_subplot(gs[1, 1])
+ax3.plot(t, X[1], color='#A774AA')
+ax3.set_xlabel('t')
+ax3.set_ylabel('y(t)')
+ax3.set_title('y(t) vs t')
+
+# z(t) vs t
+ax4 = fig.add_subplot(gs[1, 2])
+ax4.plot(t, X[2], color='#C9582C')
+ax4.set_xlabel('t')
+ax4.set_ylabel('z(t)')
+ax4.set_title('z(t) vs t')
 
 plt.show()

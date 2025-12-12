@@ -9,17 +9,15 @@ from rk4_solvers import rk4_ndim
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-from scipy.integrate import solve_ivp
-import math
 
 # -----
 # setup
 # -----
 
 # random floats
-a = random.uniform(-1, 1)
-b = random.uniform(-1, 1)
-c = random.uniform(-1, 1)
+a = random.uniform(-10, 10)
+b = random.uniform(-10, 10)
+c = random.uniform(-10, 10)
 
 # random first initial value
 y1_0 = np.array([a, b, c])
@@ -33,7 +31,6 @@ t0 = 0.0                            # initial time
 T = 30                              # final time
 dt = 0.01                           # step size
 beta = 8/3; sigma = 10; rho = 28    # parameters
-N = int((T - t0) / dt) + 1          # num steps
 
 # lorenz system
 lorenz = lambda t , x : np.array([
@@ -42,13 +39,12 @@ lorenz = lambda t , x : np.array([
     x[0]*x[1] - beta*x[2]
 ])
 
-# ------------------------------------------
-# solve for both trajectories + get distance
-# ------------------------------------------
+# ---------------------------
+# solve for both trajectories
+# ---------------------------
 
 # trajectory 1
 X1, t = rk4_ndim(lorenz, y1_0, t0, T, dt, 3)
-print(t)
 
 # trajectory 2 (slightly perturbed)
 X2, _ = rk4_ndim(lorenz, y2_0, t0, T, dt, 3)
@@ -58,11 +54,9 @@ X2, _ = rk4_ndim(lorenz, y2_0, t0, T, dt, 3)
 # -------------
 
 # Distance
-
-# force np arrays
-
 d = np.linalg.norm(X1.T-X2.T, axis=1) # take transpose so it works
 
+"""
 plt.figure(figsize=(8,5))
 plt.semilogy(t, d)
 plt.xlabel("Time")
@@ -70,10 +64,11 @@ plt.ylabel("Distance")
 plt.title("Separation of nearby Lorenz trajectories")
 plt.grid(True)
 plt.show()
+"""
 
-# --------------------------------------
-# plot exponentially increasing distance
-# --------------------------------------
+# ----------------------
+# solve for and plot LyE
+# ----------------------
 
 mask = t <= 25
 logd = np.log(d[mask])
@@ -81,6 +76,7 @@ logd = np.log(d[mask])
 # linear fit given by log(distance) = slope * t + intercept
 slope, intercept = np.polyfit(t[mask], logd, 1)
 print(f"Estimated maximal Lyapunov exponent: {slope:.4f}")
+print(f"Random Initial Condition = ({a:.2f}, {b:.2f}, {c:.2f})")
 
 plt.figure(figsize=(8,5))
 plt.semilogy(t, d, label="dist(traj1, traj2)")
