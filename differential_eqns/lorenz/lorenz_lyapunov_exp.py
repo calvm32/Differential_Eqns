@@ -1,7 +1,7 @@
 import sys
 import os
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../timestep_solvers')) # from google ai search result
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../timestep_solvers')) 
 sys.path.append(parent_dir)
 
 from rk4_solvers import rk4_ndim
@@ -9,6 +9,10 @@ from rk4_solvers import rk4_ndim
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+
+"""
+This program finds the Lyapunov exponents of the Lorenz system
+"""
 
 # -----
 # setup

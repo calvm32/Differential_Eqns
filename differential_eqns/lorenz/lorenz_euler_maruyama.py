@@ -1,10 +1,10 @@
 import sys
 import os
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../timestep_solvers')) # from google ai search result
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../timestep_solvers'))
 sys.path.append(parent_dir)
 
-from rk4_solvers import rk4_ndim
+from euler_solvers import euler_maruyama
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,7 +13,7 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 import random
 
 """
-This program plots random solutions to the Lorenz system
+This program plots random solutions to the Lorenz system using an Euler-Maruyama solver
 """
 
 # -----
@@ -26,7 +26,7 @@ b = random.uniform(-1, 1)
 c = random.uniform(-1, 1)
 
 # random initial value
-y0 = np.array([2, 2, 2])
+X0 = np.array([a, b, c])
 
 # constants
 t0 = 0.0                            # initial time
@@ -40,14 +40,17 @@ x_list = np.linspace(0, 1, N)
 y_list = np.arange(N) 
 
 # lorenz system
-lorenz = lambda t , x : np.array([
+lorenz_a = lambda t , x : np.array([
     sigma*(x[1] - x[0]),
     x[0]*(rho - x[2]) - x[1],
     x[0]*x[1] - beta*x[2]
 ])
 
+# later random noise
+lorenz_b = lambda t , x : np.array([1,1,1])
+
 # solve lorenz given conditions
-X , t = rk4_ndim(lorenz, y0, t0, T, dt, 3)
+X, t = euler_maruyama(lorenz_a, lorenz_b, X0, t0, T, dt, 3)
 
 # ------------
 # Plot in time
@@ -92,41 +95,5 @@ fig.suptitle(
     f"Random Initial Condition = ({a:.2f}, {b:.2f}, {c:.2f})",
     fontsize=16, fontweight='bold'
 )
-
-# ------------------------
-# plot in each x,y,z plane
-# ------------------------
-
-fig = plt.figure(figsize=(12, 8)) # 3x2, first row = twice height of bottom
-gs = GridSpec(2, 3, height_ratios=[2, 1], figure=fig) # actual layout
-
-# layout, make first one big
-ax1 = fig.add_subplot(gs[0, :], projection='3d')
-ax1.plot(X[0], X[1], X[2], color='blue')
-ax1.set_xlabel('x')
-ax1.set_ylabel('y')
-ax1.set_zlabel('z')
-ax1.legend()
-
-# x(t) vs t
-ax2 = fig.add_subplot(gs[1, 0])
-ax2.plot(t, X[0], color='#4F783F')
-ax2.set_xlabel('t')
-ax2.set_ylabel('x(t)')
-ax2.set_title('x(t) vs t')
-
-# y(t) vs t
-ax3 = fig.add_subplot(gs[1, 1])
-ax3.plot(t, X[1], color='#A774AA')
-ax3.set_xlabel('t')
-ax3.set_ylabel('y(t)')
-ax3.set_title('y(t) vs t')
-
-# z(t) vs t
-ax4 = fig.add_subplot(gs[1, 2])
-ax4.plot(t, X[2], color='#C9582C')
-ax4.set_xlabel('t')
-ax4.set_ylabel('z(t)')
-ax4.set_title('z(t) vs t')
 
 plt.show()

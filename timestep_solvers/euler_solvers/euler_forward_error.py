@@ -1,5 +1,5 @@
 import numpy as np
-from euler_forward import euler_forward
+from .euler_forward import euler_forward
 
 def euler_forward_error(y_exact, f, y0, t0, T): 
     """
