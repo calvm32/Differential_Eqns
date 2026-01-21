@@ -2,7 +2,7 @@ import numpy as np
 
 def euler_maruyama(a, b, X0, t0, T, dt, dim): 
     """
-    Solve the SDE dX = a(X,t)dt + b(X,t)dW on the interval [t0,T] with X(t0) = x0
+    Solve the SDE dX = a(X,t)dt + b(X,t)dW on the interval [t0,T] with X(t0) = X0
     using the forward Euler approximation method 
     """
     

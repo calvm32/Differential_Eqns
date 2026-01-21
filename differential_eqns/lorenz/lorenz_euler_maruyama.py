@@ -1,11 +1,4 @@
-import sys
-import os
-
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../timestep_solvers'))
-sys.path.append(parent_dir)
-
-from euler_solvers import euler_maruyama
-
+from timestep_solvers.euler_solvers.euler_maruyama import euler_maruyama
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec

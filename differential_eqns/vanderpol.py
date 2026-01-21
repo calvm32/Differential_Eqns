@@ -1,11 +1,4 @@
-import sys
-import os
-
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../timestep_solvers')) # from google ai search result
-sys.path.append(parent_dir)
-
-from rk4_solvers import rk4_ndim
-
+from timestep_solvers.rk4_solvers.rk4_ndim import rk4_ndim
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np

@@ -1,6 +1,3 @@
-import sys
-sys.path.append("/Users/cheldt/ODEs")
-
 from utils.ode_tools import phase_portrait
 import numpy as np
 
