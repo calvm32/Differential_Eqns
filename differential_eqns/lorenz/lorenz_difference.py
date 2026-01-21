@@ -1,4 +1,4 @@
-from timestep_solvers.rk4_solvers.rk4_ndim import rk4_modified
+from timestep_solvers.rk4_solvers.rk4_modified import rk4_modified
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
