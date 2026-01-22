@@ -39,8 +39,12 @@ lorenz_a = lambda t , x : np.array([
     x[0]*x[1] - beta*x[2]
 ])
 
-# later random noise
-lorenz_b = lambda t , x : np.array([1,1,1])
+# function for white noise
+lorenz_b = lambda t , x : np.array([
+    sigma,
+    rho,
+    beta
+])
 
 # solve lorenz given conditions
 X, t = euler_maruyama(lorenz_a, lorenz_b, X0, t0, T, dt, 3)
