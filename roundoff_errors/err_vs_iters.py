@@ -1,4 +1,4 @@
-from timestep_solvers.other_solvers import *
+from timestep_solvers.misc_solvers import *
 import matplotlib.pyplot as plt
 import numpy as np
 from math import *
