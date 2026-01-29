@@ -41,9 +41,9 @@ lorenz_a = lambda t , x : np.array([
 
 # function for white noise
 lorenz_b = lambda t , x : np.array([
-    sigma,
-    rho,
-    beta
+    1,
+    1,
+    1
 ])
 
 # solve lorenz given conditions
