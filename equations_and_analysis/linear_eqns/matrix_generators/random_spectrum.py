@@ -1,13 +1,13 @@
 import numpy as np
 
 """
-make an nxn matrix with random spectrum, and return 
+make a random matrix with a random spectrum and return the 
     - the largest eigenpair
     - the smallest eigenpair
     - corresp. matrix
 """
 
-def random_spectrum_eigenvectors(n):
+def random_spectrum(n):
     rng = np.random.default_rng()  # No seed, random every time
 
     # random spectrum

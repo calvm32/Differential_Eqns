@@ -1,5 +1,5 @@
-from eigenvalue_solvers import *
-from linear_solvers import *
+from .eigenvalue_solvers import *
+from .linear_solvers import *
 
 __all__ = [
     "eigenvalue_solvers",

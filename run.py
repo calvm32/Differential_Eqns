@@ -9,4 +9,4 @@ sys.path.insert(0, str(ROOT))
 # The script to run (relative to project root)
 script = sys.argv[1]
 
-runpy.run_module(module_name, run_name="__main__")
+runpy.run_path(script)

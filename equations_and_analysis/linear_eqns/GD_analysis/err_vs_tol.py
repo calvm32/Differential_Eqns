@@ -1,4 +1,4 @@
-from equation_solvers.timestep_solvers.misc_solvers import *
+from equation_solvers.iterative_solvers.linear_solvers import *
 import matplotlib.pyplot as plt
 import numpy as np
 from math import *

@@ -1,5 +1,5 @@
-from equation_solvers.timestep_solvers.eigenvalue_solvers import *
-from matrix_generators.random_spectrum import *
+from equation_solvers.iterative_solvers.eigenvalue_solvers import *
+from .matrix_generators.random_spectrum import *
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
@@ -17,7 +17,7 @@ conditions = []
 
 for _ in range(plot_num):
 
-    lambda_big, x_big, lambda_small, x_small, M = random_spectrum_eigenvectors(dim)
+    lambda_big, x_big, lambda_small, x_small, M = random_spectrum(dim)
     condition = abs(lambda_big / lambda_small) 
     conditions.append(condition)
 

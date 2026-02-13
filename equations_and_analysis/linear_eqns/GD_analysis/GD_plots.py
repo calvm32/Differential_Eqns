@@ -1,5 +1,5 @@
 from sklearn.datasets import make_spd_matrix
-from equation_solvers.timestep_solvers.misc_solvers.grad_descent import grad_descent
+from equation_solvers.iterative_solvers.linear_solvers import *
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec

@@ -1,7 +1,7 @@
 import numpy as np
 
 """
-Make an nxn matrix with a prescribed condition number and return the 
+make a random matrix with a prescribed condition number and return the 
     - the largest eigenpair
     - the smallest eigenpair
     - corresp. matrix
