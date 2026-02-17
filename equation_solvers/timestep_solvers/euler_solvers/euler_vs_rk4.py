@@ -1,15 +1,9 @@
-import sys
-import os
-
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) # from google ai search result
-sys.path.append(parent_dir)
-
-from rk4_solvers import rk4_error
-from rk4_solvers import rk4_ndim
-
 import numpy as np
 import matplotlib.pyplot as plt
-from euler_forward_error import euler_forward_error
+from equation_solvers.timestep_solvers.euler_solvers.euler_forward_error import euler_forward_error
+
+from equation_solvers.timestep_solvers.rk4_solvers import rk4_error
+from equation_solvers.timestep_solvers.rk4_solvers import rk4_ndim
 
 """
 This program finds the convergence rate of RK4 vs. Euler solving methods

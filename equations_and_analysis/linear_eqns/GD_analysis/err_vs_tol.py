@@ -5,8 +5,7 @@ from math import *
 import random as rand
 
 """
-Program to compare 2 different kinds of errors vs. tolerance,
-comparing solutions only a small perturbation away
+Compare 2 different kinds of errors vs. tolerance,
 """
 
 N_iter = 100

@@ -1,13 +1,13 @@
 import numpy as np
 
-"""
-make a random matrix with a prescribed condition number and return the 
-    - the largest eigenpair
-    - the smallest eigenpair
-    - corresp. matrix
-"""
-
 def conditioned_spectrum(n, cond_num):
+    """
+    Make a random matrix with a prescribed condition number and return the 
+        - the largest eigenpair
+        - the smallest eigenpair
+        - corresp. matrix
+    """
+    
     rng = np.random.default_rng()  # No seed, random every time
     
     # Random eigenvalues: Scale to get the desired condition number

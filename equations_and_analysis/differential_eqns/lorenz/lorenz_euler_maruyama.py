@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 import random
 
 """
-This program plots random solutions to the Lorenz system using an Euler-Maruyama solver
+Plots random solutions to the Lorenz system using an Euler-Maruyama solver
 """
 
 # -----

@@ -1,13 +1,13 @@
 import numpy as np
 
-"""
-make a random SYMMETRIC matrix with a prescribed spectrum and return the 
-    - the largest eigenpair
-    - the smallest eigenpair
-    - corresp. matrix
-"""
-
 def prescribed_spectrum(eigenvalues):
+    """
+    make a random SYMMETRIC matrix with a prescribed spectrum and return the 
+        - the largest eigenpair
+        - the smallest eigenpair
+        - corresp. matrix
+    """
+    
     rng = np.random.default_rng()
 
     eigenvalues = np.array(eigenvalues)

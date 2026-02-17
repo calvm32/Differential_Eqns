@@ -1,6 +1,13 @@
 import numpy as np
 
 def qr_shifted_iteration(A, num_iters=100, tol=1e-12):
+    """
+    Solve Ax = lambda x using QR iteration (with shifts)
+        -> shift with A_nn
+        -> iterate Ak1 = QR(Ak-muI)
+        -> return eigenspectra
+    """
+
     A_k = A
     n = A.shape[0]
 

@@ -5,7 +5,7 @@ from matplotlib.gridspec import GridSpec
 import random
 
 """
-This program plots a running average of solutions to the Lorenz system 
+Plots a running average of solutions to the Lorenz system 
 with nearby initial conditions
 """
 

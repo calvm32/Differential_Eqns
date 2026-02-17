@@ -5,7 +5,7 @@ from matplotlib.gridspec import GridSpec
 import random
 
 """
-This program plots random solutions to the Lorenz system, 
+Plots random solutions to the Lorenz system, 
 then individually adds a term that approaches the Lorenz system 
 in each coordinate to see perturbations
 """

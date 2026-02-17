@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-from rk4_solvers.rk4 import rk4
-from rk4_solvers.rk4_error import rk4_error
+from equation_solvers.timestep_solvers.rk4_solvers.rk4 import rk4
+from equation_solvers.timestep_solvers.rk4_solvers.rk4_error import rk4_error
 
 """
 This code tests Euler forward to make sure it converges at

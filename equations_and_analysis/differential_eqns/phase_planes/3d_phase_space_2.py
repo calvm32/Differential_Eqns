@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 """ 
-This code graphs a phase space given the solution's Jacobian
+Graphs a phase space given the solution's Jacobian
 """
 
 P = np.array([[1, 1j, -1j],

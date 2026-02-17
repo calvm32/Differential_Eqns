@@ -1,6 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+Differentiate function u using Fourier coefficients on [-pi, pi]
+"""
+
 # ----------
 # Grid setup
 # ----------
@@ -21,7 +25,6 @@ for i in range(2,7):
     # We use [a,b) so the first and last point are not duplicates.
     x = a + dx*np.arange(N)
 
-    # A truly periodic test function on [a,b)
     # u = np.sin((2*np.pi/L)*x)
     # ux_exact = (2*np.pi/L)*np.cos((2*np.pi/L)*x)
     # uxx_exact = -(2*np.pi/L)**2*np.sin((2*np.pi/L)*x)

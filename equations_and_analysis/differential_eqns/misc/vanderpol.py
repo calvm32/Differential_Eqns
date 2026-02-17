@@ -5,7 +5,7 @@ import numpy as np
 import random
 
 """
-This program plots solutions to the Van der Pol equation 
+Plots solutions to the Van der Pol equation 
 y'' + (y^2-1)y' + y = 0
 """
 

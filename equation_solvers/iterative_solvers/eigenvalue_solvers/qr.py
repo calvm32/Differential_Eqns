@@ -1,6 +1,12 @@
 import numpy as np
 
 def qr_iteration(A, num_iters=100, tol=1e-12):
+    """
+    Solve Ax = lambda x using QR iteration (without shifts)
+        -> iterate Ak1 = QR(Ak)
+        -> return eigenspectra
+    """
+
     A_k = A
 
     for num in range(num_iters):

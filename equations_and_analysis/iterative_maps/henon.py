@@ -5,7 +5,9 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 
 """
-This program plots the Hénon map
+Plots the Hénon map 
+    -> x_n1 = 1 - ax_n**2 + y_n
+    -> y_n1 = bx_n
 """
 
 # -----
@@ -40,22 +42,22 @@ def frob_norm(x,y):
 def run_mapping(x0, y0, a, b, N_start, N_end):
     LyE = 0
 
-    x_new=x0
-    y_new=y0
+    x_n1=x0
+    y_n1=y0
     for n in range(N_end):
-        LyE += math.log(frob_norm(x_new,y_new))/N_end # norm of nth time step, before dividing
+        LyE += math.log(frob_norm(x_n1,y_n1))/N_end # norm of nth time step, before dividing
 
         # only print from N_start (100) to N_end (500)
         if n >= N_start:
-            x_list.append(x_new)
-            y_list.append(y_new)
+            x_list.append(x_n1)
+            y_list.append(y_n1)
             count_list.append(n)
 
-        x_old = x_new
-        y_old = y_new
+        x_n = x_n1
+        y_n = y_n1
 
-        x_new = 1-a*(x_old)**2 + y_old
-        y_new = b*x_old
+        x_n1 = 1-a*(x_n)**2 + y_n
+        y_n1 = b*x_n
 
     return(LyE) 
 

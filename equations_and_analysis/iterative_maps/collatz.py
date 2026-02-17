@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 
 """
-This program plots the amount of time it takes for the 
-Collatez map to terminate at 1
+Plots the amount of time it takes for the Collatez map to terminate at 1
 """
 
 # -----

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 """ 
-This code graphs a phase space given the solution's Jordan decomposition
+Graphs a phase space given the solution's Jordan decomposition
 """
 
 P = np.array([[1, 1, 1],

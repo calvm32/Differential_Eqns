@@ -3,6 +3,10 @@ from equations_and_analysis.linear_eqns.matrix_generators.random_spectrum import
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+Compare dimension vs. final error
+"""
+
 seed_num = 10
 plot_num = 20
 dim_exp = 10

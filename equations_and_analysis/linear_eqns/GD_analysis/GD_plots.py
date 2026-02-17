@@ -7,6 +7,11 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 import random as rand
 import sympy as sp
 
+"""
+Compare gradient descent error over a lot of initial conditions
+    -> real system
+"""
+
 # ------------------
 # different settings
 # ------------------

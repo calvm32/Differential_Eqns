@@ -1,5 +1,5 @@
 import numpy as np
-from .rk4 import rk4
+from equation_solvers.timestep_solvers.rk4_solvers.rk4 import rk4
 
 def rk4_error(y_exact, f, y0, t0, T): 
     """

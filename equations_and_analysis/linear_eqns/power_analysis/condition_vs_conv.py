@@ -1,8 +1,12 @@
 from equation_solvers.iterative_solvers.eigenvalue_solvers import *
-from .matrix_generators.random_spectrum import *
+from equations_and_analysis.linear_eqns.matrix_generators.random_spectrum import *
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
+
+"""
+Compare condition number vs final error
+"""
 
 seed_num = 10
 plot_num = 10000

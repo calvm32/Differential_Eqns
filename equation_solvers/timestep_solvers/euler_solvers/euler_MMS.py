@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from euler_forward import euler_forward
-from euler_forward_error import euler_forward_error
+from equation_solvers.timestep_solvers.euler_solvers.euler_forward import euler_forward
+from equation_solvers.timestep_solvers.euler_solvers.euler_forward_error import euler_forward_error
 
 """
 This code tests Euler forward to make sure it converges at

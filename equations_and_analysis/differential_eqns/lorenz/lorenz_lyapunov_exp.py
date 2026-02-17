@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import random
 
 """
-This program finds the Lyapunov exponents of the Lorenz system
+Finds the Lyapunov exponents of the Lorenz system
 """
 
 # -----

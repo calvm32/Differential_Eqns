@@ -2,6 +2,9 @@ from math import *
 import numpy as np
 
 def grad_descent(f, grad_f, X0, X_exact, dt, max_iters=100):
+    """
+    Find a root of f(x) near X0 using gradient descent
+    """
     
     dim = X0.shape[0]
     X = np.zeros((dim, max_iters + 1), dtype = float)
