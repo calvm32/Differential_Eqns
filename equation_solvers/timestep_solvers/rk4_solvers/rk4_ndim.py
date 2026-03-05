@@ -9,7 +9,7 @@ def rk4_ndim(f, y0, t0, T, dt):
     N = int(np.floor((T-t0)/dt) + 1) # fixed number of steps
     t = t0+dt*np.arange(0,N)
     
-    dim = X0.shape[0]
+    dim = y0.shape[0]
     y = np.zeros((dim, N), dtype = float)
     y[:, 0] = y0 # Set initial value
 
