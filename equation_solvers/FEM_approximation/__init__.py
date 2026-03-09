@@ -1,5 +1,6 @@
-from .gaussian_quadrature2D import *
+from .gaussian_quadrature_2D import *
+from .parse_mesh import *
 
 __all__ = [
-    "gaussian_quadrature2D",
+    "gaussian_quadrature_2D",
 ]

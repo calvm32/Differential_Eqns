@@ -32,3 +32,6 @@ def prescribed_spectrum(eigenvalues):
 
     return largest_eigenvalue, largest_eigenvector, \
            smallest_eigenvalue, smallest_eigenvector, M
+
+if __name__=="__main__":
+    main()

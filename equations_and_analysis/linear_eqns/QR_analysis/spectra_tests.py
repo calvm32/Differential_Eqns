@@ -65,3 +65,6 @@ plt.ylabel('log(error)')
 plt.title('Error vs. Iteration number')
 plt.legend()
 plt.show()
+
+if __name__=="__main__":
+    main()

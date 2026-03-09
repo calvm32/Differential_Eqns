@@ -48,3 +48,6 @@ plt.ylabel('log(iterations before tolerance)')
 plt.title('Number of Iterations vs. Dimension (Fixed Tolerance)')
 plt.legend()
 plt.show()
+
+if __name__=="__main__":
+    main()

@@ -40,3 +40,6 @@ ax.set_title(f"IC = ({y0[0]:.2f}, {y0[1]:.2f})")
 ax.legend()
 
 plt.show()
+
+if __name__=="__main__":
+    main()

@@ -47,3 +47,6 @@ plt.ylabel('log(error)')
 plt.title('Error vs. Dimension (Fixed Iterations)')
 plt.legend()
 plt.show()
+
+if __name__=="__main__":
+    main()

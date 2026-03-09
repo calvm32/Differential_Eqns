@@ -81,3 +81,6 @@ ax2.semilogy(t, errors, color='red')
 ax2.set_xlabel('t'); ax2.set_ylabel('error(t)')
 
 plt.show()
+
+if __name__=="__main__":
+    main()

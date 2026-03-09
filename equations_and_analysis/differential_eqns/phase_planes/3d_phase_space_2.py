@@ -66,3 +66,6 @@ ax4.set_title('z(t) vs t')
 
 plt.tight_layout()
 plt.show()
+
+if __name__=="__main__":
+    main()

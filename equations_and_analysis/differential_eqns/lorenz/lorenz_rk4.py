@@ -123,3 +123,6 @@ ax4.set_ylabel('z(t)')
 ax4.set_title('z(t) vs t')
 
 plt.show()
+
+if __name__=="__main__":
+    main()

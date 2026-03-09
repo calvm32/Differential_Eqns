@@ -91,3 +91,6 @@ plt.show()
 
 # this was converted from the MATLAB code found in
 # https://github.com/chebfun/examples/blob/master/ode-nonlin/LyapunovExponents.m
+
+if __name__=="__main__":
+    main()

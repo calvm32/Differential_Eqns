@@ -114,3 +114,6 @@ for n in range(10):
          color='#C9582C', alpha=opacity)
 
 plt.show()
+
+if __name__=="__main__":
+    main()

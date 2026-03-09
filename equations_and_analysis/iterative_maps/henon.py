@@ -108,3 +108,6 @@ plt.title("LyE values of Henon map")
 plt.suptitle(f"Initial condition=({x0:.2f},{y0:.2f})", fontsize=16, fontweight='bold') # got suptitle from google ai result
 
 plt.show()
+
+if __name__=="__main__":
+    main()

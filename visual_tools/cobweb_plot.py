@@ -105,3 +105,6 @@ epsilon = 1e-1
 
 ani = animate_cobweb_and_orbit(f, x0, a, b, iters=iters)
 ani.save("newton_cobweb_and_orbit.gif", writer="pillow", fps=10)
+
+if __name__=="__main__":
+    main()

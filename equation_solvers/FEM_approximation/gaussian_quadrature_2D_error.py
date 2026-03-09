@@ -1,9 +1,10 @@
 import numpy as np
 from equation_solvers.FEM_approximation.parse_mesh import *
-from pathlib import Path
+from pathlib import Path 
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 def reference_triangle(exactness_degree):  
-
 
     if exactness_degree == 1:
         nodes = np.array([[1/3, 1/3]])
@@ -54,7 +55,38 @@ def integrate_mesh(f, mesh_nodes, mesh_elements, exactness_degree):
 
     return total_estimate
 
-mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L1.msh"
+def sample_triangle(vertices, n):
+    """sample a collection of points in the triangle to compute area at"""
+    x1, y1 = vertices[0]
+    x2, y2 = vertices[1]
+    x3, y3 = vertices[2]
+    points = []
+    for i in range(n+1):
+        for j in range(n+1-i):
+            xi = i / n
+            eta = j / n
+            x = x1 + xi*(x2-x1) + eta*(x3-x1)
+            y = y1 + xi*(y2-y1) + eta*(y3-y1)
+            points.append((x, y))
+    return points
+
+def local_error_points(f, vertices, quad_estimate, n):
+
+    quad_high = integrate_on_triangle(f, vertices, 3)
+    quad_low  = integrate_on_triangle(f, vertices, 1)
+
+    error = abs(quad_high - quad_low)
+
+    points = sample_triangle(vertices, n)
+    errors = [error for _ in points]
+
+    return points, errors
+
+# -------------------
+# calculate functions
+# -------------------
+
+mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L5.msh"
 
 f = lambda x, y: np.sin(x)*np.cos(y)
 # on the recangle [a,b]x[c,d], this evaluates to exactly (cos(a)-cos(b))*(cos(c)-cos(d))
@@ -66,5 +98,38 @@ total_exact = (-1)*(np.cos(1) - np.cos(0))*(np.sin(0.5) - np.sin(0)) + (-1)*(np.
 mesh_nodes, mesh_elements = parse_mesh(mesh_path)
 total_estimate = integrate_mesh(f, mesh_nodes, mesh_elements, 1)
 
-# print(f"\n\nEstimated integrand: {total_estimate:.4f}")
-# print(f"Exact integrand: {total_exact:.4f}\n\n")
+print(f"\n\nEstimated integrand: {total_estimate:.4f}")
+print(f"Exact integrand: {total_exact:.4f}\n\n")
+
+# ----------
+# error plot
+# ----------
+
+all_points = []
+all_errors = []
+n = 1 # num subdivisions
+
+for elem in mesh_elements:
+    vertices = [mesh_nodes[elem[0]-1], mesh_nodes[elem[1]-1], mesh_nodes[elem[2]-1]]
+    quad_estimate = integrate_on_triangle(f, vertices, exactness_degree=3)
+    pts, errs = local_error_points(f, vertices, quad_estimate, n)
+    all_points.extend(pts)
+    all_errors.extend(errs)
+
+all_points = np.array(all_points)
+all_errors = np.array(all_errors)
+
+fig = plt.figure(figsize=(10,8))
+ax = fig.add_subplot(111, projection='3d')
+
+X = all_points[:,0]
+Y = all_points[:,1]
+Z = all_errors
+
+p = ax.scatter(X, Y, Z, c=Z, cmap='viridis')
+fig.colorbar(p, ax=ax, label='error')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('error')
+ax.set_title('local integration error')
+plt.show()

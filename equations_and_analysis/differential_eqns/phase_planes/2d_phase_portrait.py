@@ -16,3 +16,6 @@ def f(Y, t):
             -y + 0.8*x*y]  # dy/dt
 
 phase_portrait(x, y, f)
+
+if __name__=="__main__":
+    main()

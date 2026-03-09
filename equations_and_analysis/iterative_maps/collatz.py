@@ -34,3 +34,6 @@ plt.semilogx(IC_list, count_list)
 plt.xlabel("Initial Condition")
 plt.ylabel("log(Iterations taken to reach 1)")
 plt.show()
+
+if __name__=="__main__":
+    main()
