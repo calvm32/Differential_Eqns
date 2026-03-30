@@ -18,7 +18,7 @@ def reference_triangle(exactness_degree):
         weights = np.array([0.068464377, 0.109543004, 0.068464377, 0.061728395,
                            0.098765432, 0.061728395, 0.008696116, 0.013913785, 0.008696116])       
     else:
-        print("\n Warning!!!! must enter exactness degree 1, 2, or 3\n") 
+        print("\nWarning!!!! must enter exactness degree 1, 2, or 3\n") 
 
     return nodes, weights
 
@@ -82,54 +82,59 @@ def local_error_points(f, vertices, quad_estimate, n):
 
     return points, errors
 
-# -------------------
-# calculate functions
-# -------------------
+def main():
 
-mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L5.msh"
+    # -------------------
+    # calculate functions
+    # -------------------
 
-f = lambda x, y: np.sin(x)*np.cos(y)
-# on the recangle [a,b]x[c,d], this evaluates to exactly (cos(a)-cos(b))*(cos(c)-cos(d))
-# on the L-shaped domain, we have [0,1]x[0,0.5] + [0,0.5]x[0.5,1]
+    mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L5_bary.msh"
 
-print()
-total_exact = (-1)*(np.cos(1) - np.cos(0))*(np.sin(0.5) - np.sin(0)) + (-1)*(np.cos(0.5) - np.cos(0))*(np.sin(1) - np.sin(0.5))
+    f = lambda x, y: np.sin(x)*np.cos(y)
+    # on the recangle [a,b]x[c,d], this evaluates to exactly (cos(a)-cos(b))*(cos(c)-cos(d))
+    # on the L-shaped domain, we have [0,1]x[0,0.5] + [0,0.5]x[0.5,1]
 
-mesh_nodes, mesh_elements = parse_mesh(mesh_path)
-total_estimate = integrate_mesh(f, mesh_nodes, mesh_elements, 1)
+    print()
+    total_exact = (-1)*(np.cos(1) - np.cos(0))*(np.sin(0.5) - np.sin(0)) + (-1)*(np.cos(0.5) - np.cos(0))*(np.sin(1) - np.sin(0.5))
 
-print(f"\n\nEstimated integrand: {total_estimate:.4f}")
-print(f"Exact integrand: {total_exact:.4f}\n\n")
+    mesh_nodes, mesh_elements = parse_mesh(mesh_path)
+    total_estimate = integrate_mesh(f, mesh_nodes, mesh_elements, 1)
 
-# ----------
-# error plot
-# ----------
+    print(f"\n\nEstimated integrand: {total_estimate:.4f}")
+    print(f"Exact integrand: {total_exact:.4f}\n\n")
 
-all_points = []
-all_errors = []
-n = 1 # num subdivisions
+    # ----------
+    # error plot
+    # ----------
 
-for elem in mesh_elements:
-    vertices = [mesh_nodes[elem[0]-1], mesh_nodes[elem[1]-1], mesh_nodes[elem[2]-1]]
-    quad_estimate = integrate_on_triangle(f, vertices, exactness_degree=3)
-    pts, errs = local_error_points(f, vertices, quad_estimate, n)
-    all_points.extend(pts)
-    all_errors.extend(errs)
+    all_points = []
+    all_errors = []
+    n = 1 # num subdivisions
 
-all_points = np.array(all_points)
-all_errors = np.array(all_errors)
+    for elem in mesh_elements:
+        vertices = [mesh_nodes[elem[0]-1], mesh_nodes[elem[1]-1], mesh_nodes[elem[2]-1]]
+        quad_estimate = integrate_on_triangle(f, vertices, exactness_degree=3)
+        pts, errs = local_error_points(f, vertices, quad_estimate, n)
+        all_points.extend(pts)
+        all_errors.extend(errs)
 
-fig = plt.figure(figsize=(10,8))
-ax = fig.add_subplot(111, projection='3d')
+    all_points = np.array(all_points)
+    all_errors = np.array(all_errors)
 
-X = all_points[:,0]
-Y = all_points[:,1]
-Z = all_errors
+    fig = plt.figure(figsize=(10,8))
+    ax = fig.add_subplot(111, projection='3d')
 
-p = ax.scatter(X, Y, Z, c=Z, cmap='viridis')
-fig.colorbar(p, ax=ax, label='error')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('error')
-ax.set_title('local integration error')
-plt.show()
+    X = all_points[:,0]
+    Y = all_points[:,1]
+    Z = all_errors
+
+    p = ax.scatter(X, Y, Z, c=Z, cmap='viridis')
+    fig.colorbar(p, ax=ax, label='error')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('error')
+    ax.set_title('local integration error')
+    plt.show()
+
+if __name__=="__main__":
+    main()

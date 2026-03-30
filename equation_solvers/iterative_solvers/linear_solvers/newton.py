@@ -24,5 +24,3 @@ def truncated_newton(f, f_prime, x0, zero_tol=1e-8, max_iters=30, dps=20):
         x_prev = x
     
     return x
-
-    

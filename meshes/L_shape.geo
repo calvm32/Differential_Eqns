@@ -1,7 +1,3 @@
-// INFO: 
-// V Total DoFs: 28,280                                                                                                                                   
-// W Total DoFs: 18,648       
-
 lc = 1.0;   // mesh size
 
 // ------------------
@@ -19,7 +15,6 @@ Point(6) = {0, 1, 0, lc};			// top right corner
 // Lines
 // -----
 
-// Bottom wall with step
 Line(1) = {1,2};
 Line(2) = {2,3};
 Line(3) = {3,4};

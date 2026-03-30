@@ -2,8 +2,7 @@ import numpy as np
 from equation_solvers.FEM_approximation.parse_mesh import *
 from pathlib import Path
 
-def reference_triangle(exactness_degree):  
-
+def reference_triangle(exactness_degree): 
 
     if exactness_degree == 1:
         nodes = np.array([[1/3, 1/3]])
@@ -54,17 +53,22 @@ def integrate_mesh(f, mesh_nodes, mesh_elements, exactness_degree):
 
     return total_estimate
 
-mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L1.msh"
+def main():
 
-f = lambda x, y: np.sin(x)*np.cos(y)
-# on the recangle [a,b]x[c,d], this evaluates to exactly (cos(a)-cos(b))*(cos(c)-cos(d))
-# on the L-shaped domain, we have [0,1]x[0,0.5] + [0,0.5]x[0.5,1]
+    mesh_path = Path(__file__).parent.parent.parent / "meshes" / "L1.msh"
 
-print()
-total_exact = (-1)*(np.cos(1) - np.cos(0))*(np.sin(0.5) - np.sin(0)) + (-1)*(np.cos(0.5) - np.cos(0))*(np.sin(1) - np.sin(0.5))
+    f = lambda x, y: np.sin(x)*np.cos(y)
+    # on the recangle [a,b]x[c,d], this evaluates to exactly (cos(a)-cos(b))*(cos(c)-cos(d))
+    # on the L-shaped domain, we have [0,1]x[0,0.5] + [0,0.5]x[0.5,1]
 
-mesh_nodes, mesh_elements = parse_mesh(mesh_path)
-total_estimate = integrate_mesh(f, mesh_nodes, mesh_elements, 1)
+    print()
+    total_exact = (-1)*(np.cos(1) - np.cos(0))*(np.sin(0.5) - np.sin(0)) + (-1)*(np.cos(0.5) - np.cos(0))*(np.sin(1) - np.sin(0.5))
 
-# print(f"\n\nEstimated integrand: {total_estimate:.4f}")
-# print(f"Exact integrand: {total_exact:.4f}\n\n")
+    mesh_nodes, mesh_elements = parse_mesh(mesh_path)
+    total_estimate = integrate_mesh(f, mesh_nodes, mesh_elements, 1)
+
+    print(f"\n\nEstimated integrand: {total_estimate:.4f}")
+    print(f"Exact integrand: {total_exact:.4f}\n\n")
+
+if __name__=="__main__":
+    main()

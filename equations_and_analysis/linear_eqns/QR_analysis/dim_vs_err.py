@@ -7,45 +7,47 @@ import matplotlib.pyplot as plt
 Compare dimension vs. final error
 """
 
-seed_num = 10
-plot_num = 20
-dim_exp = 10
+def main():
 
-# error vs. dimension; 50 times
-plt.figure() # first plot
+    seed_num = 10
+    plot_num = 20
+    dim_exp = 10
 
-for _ in range(plot_num):
-    errors_pow = []
-    errors_inv = []
-    dimensions = []
+    # error vs. dimension; 50 times
+    plt.figure() # first plot
 
-    for i in range(1,dim_exp):
-        n = 2**i
-        dimensions.append(n)
+    for _ in range(plot_num):
+        errors_pow = []
+        errors_inv = []
+        dimensions = []
 
-        lambda_exact, x_exact, lambda_small, x_small, M = random_spectrum(n)
+        for i in range(1,dim_exp):
+            n = 2**i
+            dimensions.append(n)
 
-        # calculate QR eigenvalue
-        eigenvals, num = qr_iteration(M, num_iters = 30)
-        lambda_approx = eigenvals[0]
-        errors_pow.append(np.abs(lambda_exact - lambda_approx))
+            lambda_exact, x_exact, lambda_small, x_small, M = random_spectrum(n)
 
-        # calculate shifted QR eigenvalue
-        eigenvals, num = qr_shifted_iteration(M, num_iters = 10)
-        lambda_approx = eigenvals[0]
-        errors_inv.append(np.abs(lambda_exact - lambda_approx))
+            # calculate QR eigenvalue
+            eigenvals, num = qr_iteration(M, num_iters = 30)
+            lambda_approx = eigenvals[0]
+            errors_pow.append(np.abs(lambda_exact - lambda_approx))
 
-        plt.loglog(dimensions, errors_pow, color="tab:blue", alpha=0.2)
-        plt.loglog(dimensions, errors_inv, color="tab:orange", alpha=0.2)
+            # calculate shifted QR eigenvalue
+            eigenvals, num = qr_shifted_iteration(M, num_iters = 10)
+            lambda_approx = eigenvals[0]
+            errors_inv.append(np.abs(lambda_exact - lambda_approx))
 
-plt.loglog(2, 2, color="tab:blue", label="QR")
-plt.loglog(2, 2, color="tab:orange", label="shifted QR")
+            plt.loglog(dimensions, errors_pow, color="tab:blue", alpha=0.2)
+            plt.loglog(dimensions, errors_inv, color="tab:orange", alpha=0.2)
 
-plt.xlabel('log(dimension)')
-plt.ylabel('log(error)')
-plt.title('Error vs. Dimension (Fixed Iterations)')
-plt.legend()
-plt.show()
+    plt.loglog(2, 2, color="tab:blue", label="QR")
+    plt.loglog(2, 2, color="tab:orange", label="shifted QR")
+
+    plt.xlabel('log(dimension)')
+    plt.ylabel('log(error)')
+    plt.title('Error vs. Dimension (Fixed Iterations)')
+    plt.legend()
+    plt.show()
 
 if __name__=="__main__":
     main()

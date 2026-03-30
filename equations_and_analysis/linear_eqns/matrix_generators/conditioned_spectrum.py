@@ -35,6 +35,3 @@ def conditioned_spectrum(n, cond_num):
     M = Q @ np.diag(eigenvalues) @ Q.T
 
     return largest_eigenvalue, largest_eigenvector, smallest_eigenvalue, smallest_eigenvector, M
-
-if __name__=="__main__":
-    main()

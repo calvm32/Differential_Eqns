@@ -10,104 +10,106 @@ Plots the Hénon map
     -> y_n1 = bx_n
 """
 
-# -----
-# setup
-# -----
+def main():
 
-# constants 
-a = 1.4
-b = 0.005
-N_start = 100 # first iteration to plot
-N_end = 500 # final iteration to plot
+    # -----
+    # setup
+    # -----
 
-# random initial conditions
-x0 = random.uniform(-1, 1)
-y0 = random.uniform(-1, 1)
+    # constants 
+    a = 1.4
+    b = 0.005
+    N_start = 100 # first iteration to plot
+    N_end = 500 # final iteration to plot
 
-x_list = [] # list of x vals
-y_list = [] # list of y vals
-count_list = [] # for color mapping
+    # random initial conditions
+    x0 = random.uniform(-1, 1)
+    y0 = random.uniform(-1, 1)
 
-sin_list = [] # for color mapping comparison
-angles_list = [] # for color mapping comparison
+    x_list = [] # list of x vals
+    y_list = [] # list of y vals
+    count_list = [] # for color mapping
 
-# norm for error evaluation
-def frob_norm(x,y):
-    return ((a*(1-y))**2 + (a*x)**2 + (b*y)**2 + (b*(1-x))**2)**(1/2)
+    sin_list = [] # for color mapping comparison
+    angles_list = [] # for color mapping comparison
 
-# -----
-# solve
-# -----
+    # norm for error evaluation
+    def frob_norm(x,y):
+        return ((a*(1-y))**2 + (a*x)**2 + (b*y)**2 + (b*(1-x))**2)**(1/2)
 
-def run_mapping(x0, y0, a, b, N_start, N_end):
-    LyE = 0
+    # -----
+    # solve
+    # -----
 
-    x_n1=x0
-    y_n1=y0
-    for n in range(N_end):
-        LyE += math.log(frob_norm(x_n1,y_n1))/N_end # norm of nth time step, before dividing
+    def run_mapping(x0, y0, a, b, N_start, N_end):
+        LyE = 0
 
-        # only print from N_start (100) to N_end (500)
-        if n >= N_start:
-            x_list.append(x_n1)
-            y_list.append(y_n1)
-            count_list.append(n)
+        x_n1=x0
+        y_n1=y0
+        for n in range(N_end):
+            LyE += math.log(frob_norm(x_n1,y_n1))/N_end # norm of nth time step, before dividing
 
-        x_n = x_n1
-        y_n = y_n1
+            # only print from N_start (100) to N_end (500)
+            if n >= N_start:
+                x_list.append(x_n1)
+                y_list.append(y_n1)
+                count_list.append(n)
 
-        x_n1 = 1-a*(x_n)**2 + y_n
-        y_n1 = b*x_n
+            x_n = x_n1
+            y_n = y_n1
 
-    return(LyE) 
+            x_n1 = 1-a*(x_n)**2 + y_n
+            y_n1 = b*x_n
+
+        return(LyE) 
 
 
-# ------------
-# plot one run
-# ------------  
+    # ------------
+    # plot one run
+    # ------------  
 
-"""
-# get sine map for color mapping comparison
-for n in count_list:
-    x = (n-N_start)*(2 * math.pi) / (N_end - N_start) # 0 when n = N_start, 2pi when n = N_end
-    angles_list.append(x)
-    sin_list.append(math.sin(x))
+    """
+    # get sine map for color mapping comparison
+    for n in count_list:
+        x = (n-N_start)*(2 * math.pi) / (N_end - N_start) # 0 when n = N_start, 2pi when n = N_end
+        angles_list.append(x)
+        sin_list.append(math.sin(x))
 
-# got this soln from google
-fig = plt.figure()
-gs = GridSpec(2, 1, figure=fig, hspace=0.4) # actual layout
+    # got this soln from google
+    fig = plt.figure()
+    gs = GridSpec(2, 1, figure=fig, hspace=0.4) # actual layout
 
-# sine plot
-ax1 = fig.add_subplot(gs[0, 0])
-ax1.scatter(angles_list, sin_list, c=count_list, cmap='viridis')
-ax1.set_title("sine map for time comparison")
+    # sine plot
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax1.scatter(angles_list, sin_list, c=count_list, cmap='viridis')
+    ax1.set_title("sine map for time comparison")
 
-# Henon map plot
-ax2 = fig.add_subplot(gs[1, 0])
-ax2.scatter(x_list, y_list, c=count_list, cmap='viridis')
-ax2.set_title("Henon map")
+    # Henon map plot
+    ax2 = fig.add_subplot(gs[1, 0])
+    ax2.scatter(x_list, y_list, c=count_list, cmap='viridis')
+    ax2.set_title("Henon map")
 
-fig.suptitle(f"Initial condition=({x0:.2f},{y0:.2f}), a={a}, b={b}", fontsize=16, fontweight='bold') # got suptitle from google ai result
+    fig.suptitle(f"Initial condition=({x0:.2f},{y0:.2f}), a={a}, b={b}", fontsize=16, fontweight='bold') # got suptitle from google ai result
 
-plt.show()
-"""
+    plt.show()
+    """
 
-# ----------------------
-# plot LyE over many ICs
-# ----------------------
+    # ----------------------
+    # plot LyE over many ICs
+    # ----------------------
 
-b_list = np.arange(-2, 1, 0.001) # calculate every thousandth
-LyE_list = [] # get LyE for system given b
+    b_list = np.arange(-2, 1, 0.001) # calculate every thousandth
+    LyE_list = [] # get LyE for system given b
 
-for b_val in b_list:
-    LyE_list.append(run_mapping(x0, x0, a, b_val, N_start, N_end))
+    for b_val in b_list:
+        LyE_list.append(run_mapping(x0, x0, a, b_val, N_start, N_end))
 
-# LyE plot
-plt.scatter(b_list, LyE_list)
-plt.title("LyE values of Henon map")
-plt.suptitle(f"Initial condition=({x0:.2f},{y0:.2f})", fontsize=16, fontweight='bold') # got suptitle from google ai result
+    # LyE plot
+    plt.scatter(b_list, LyE_list)
+    plt.title("LyE values of Henon map")
+    plt.suptitle(f"Initial condition=({x0:.2f},{y0:.2f})", fontsize=16, fontweight='bold') # got suptitle from google ai result
 
-plt.show()
+    plt.show()
 
 if __name__=="__main__":
     main()

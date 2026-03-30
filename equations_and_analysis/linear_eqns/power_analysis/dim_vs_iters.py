@@ -8,46 +8,48 @@ import random as rand
 Compare dimension vs. iterations to converge
 """
 
-seed_num = 10
-plot_num = 50
-dim_exp = 10
+def main():
 
-# num. iterations vs. dimension; plot_num times
-plt.figure() # second plot
+    seed_num = 10
+    plot_num = 50
+    dim_exp = 10
 
-for _ in range(plot_num):
-    iterations_pow = []
-    iterations_inv = []
-    dimensions = []
-    tol = 1e-10
+    # num. iterations vs. dimension; plot_num times
+    plt.figure() # second plot
 
-    for i in range(1,dim_exp):
-        n = 2**i
-        dimensions.append(n)
+    for _ in range(plot_num):
+        iterations_pow = []
+        iterations_inv = []
+        dimensions = []
+        tol = 1e-10
 
-        lambda_big, x_big, lambda_small, x_small, M = random_spectrum(n)
+        for i in range(1,dim_exp):
+            n = 2**i
+            dimensions.append(n)
 
-        # calculate power iteration eigenvalue
-        x_approx, num = power_iteration(M, tol = 1e-4)
-        lambda_approx = rayleigh_quotient(M, x_approx)
-        iterations_pow.append(num)
+            lambda_big, x_big, lambda_small, x_small, M = random_spectrum(n)
 
-        # calculate inv. power iteratoin eigenvalue
-        x_approx, num = inverse_power_iteration(M, tol = 1e-4)
-        lambda_approx = rayleigh_quotient(M, x_approx)
-        iterations_inv.append(num)
+            # calculate power iteration eigenvalue
+            x_approx, num = power_iteration(M, tol = 1e-4)
+            lambda_approx = rayleigh_quotient(M, x_approx)
+            iterations_pow.append(num)
 
-        plt.loglog(dimensions, iterations_pow, color="tab:blue", alpha=0.2)
-        plt.loglog(dimensions, iterations_inv, color="tab:orange", alpha=0.2)
+            # calculate inv. power iteratoin eigenvalue
+            x_approx, num = inverse_power_iteration(M, tol = 1e-4)
+            lambda_approx = rayleigh_quotient(M, x_approx)
+            iterations_inv.append(num)
 
-plt.loglog(2, 10, color="tab:blue", label="power method")
-plt.loglog(2, 10, color="tab:orange", label="inverse power method")
+            plt.loglog(dimensions, iterations_pow, color="tab:blue", alpha=0.2)
+            plt.loglog(dimensions, iterations_inv, color="tab:orange", alpha=0.2)
 
-plt.xlabel('log(dimension)')
-plt.ylabel('log(iterations before tolerance)')
-plt.title('Number of Iterations vs. Dimension (Fixed Tolerance)')
-plt.legend()
-plt.show()
+    plt.loglog(2, 10, color="tab:blue", label="power method")
+    plt.loglog(2, 10, color="tab:orange", label="inverse power method")
+
+    plt.xlabel('log(dimension)')
+    plt.ylabel('log(iterations before tolerance)')
+    plt.title('Number of Iterations vs. Dimension (Fixed Tolerance)')
+    plt.legend()
+    plt.show()
 
 if __name__=="__main__":
     main()

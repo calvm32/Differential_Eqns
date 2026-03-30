@@ -30,8 +30,4 @@ def prescribed_spectrum(eigenvalues):
     # symmetric matrix with given spectrum
     M = Q @ np.diag(eigenvalues) @ Q.T
 
-    return largest_eigenvalue, largest_eigenvector, \
-           smallest_eigenvalue, smallest_eigenvector, M
-
-if __name__=="__main__":
-    main()
+    return largest_eigenvalue, largest_eigenvector, smallest_eigenvalue, smallest_eigenvector, M

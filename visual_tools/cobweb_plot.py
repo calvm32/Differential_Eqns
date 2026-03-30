@@ -88,23 +88,26 @@ def animate_cobweb_and_orbit(f, x0, a, b, r=None, iters=25):
     plt.show()
     return ani
 
-# ----------
-# Run things
-# ----------
 
-def f(x, r=None):
-    func = np.cos(x) - x
-    func_prime = -np.sin(x) - 1
-    return x - func / func_prime
+def main():
 
-x0 = 0.74
-a, b = -5.0, 5.0
-iters = 50
-epsilon = 1e-1
-#x0 += epsilon*rand.uniform(-1, 1)
+    # ----------
+    # Run things
+    # ----------
 
-ani = animate_cobweb_and_orbit(f, x0, a, b, iters=iters)
-ani.save("newton_cobweb_and_orbit.gif", writer="pillow", fps=10)
+    def f(x, r=None):
+        func = np.cos(x) - x
+        func_prime = -np.sin(x) - 1
+        return x - func / func_prime
+
+    x0 = 0.74
+    a, b = -5.0, 5.0
+    iters = 50
+    epsilon = 1e-1
+    #x0 += epsilon*rand.uniform(-1, 1)
+
+    ani = animate_cobweb_and_orbit(f, x0, a, b, iters=iters)
+    ani.save("newton_cobweb_and_orbit.gif", writer="pillow", fps=10)
 
 if __name__=="__main__":
     main()

@@ -12,7 +12,7 @@ def parse_mesh(mesh_path):
         for node in entity.get_nodes():
             nid = node.get_tag()
             coords = node.get_coordinates()
-            # print(f"Node {nid}: {coords}")
+            print(f"Node {nid}: {coords}")
             nodes.append(coords)
 
     # Extract all elements
@@ -21,7 +21,7 @@ def parse_mesh(mesh_path):
         for element in entity.get_elements():
             elid = element.get_tag()
             conn = element.get_connectivity()
-            # print(f"Element {elid} (type {eltype}): {conn}")   
+            print(f"Element {elid} (type {eltype}): {conn}")   
             elements.append(conn)
 
     nodes = [[x, y] for x, y, z in nodes] # convert (x,y,z) to [x,y]
