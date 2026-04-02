@@ -1,6 +1,6 @@
 import numpy as np
 
-def rk4_fourier(rhs, u_hat_0, f_hat, t0, T, dt, ksq, nu, t="DEFAULT"):
+def rk4_fourier(rhs, u_hat_0, f_hat, t0, T, dt, ksq, nu, t=[]):
     """
     Solve the ODE y' = f(t,y) on the interval [t0,T] with y(t0) = y0
     using the Runge-Kutta-4 approximation method 

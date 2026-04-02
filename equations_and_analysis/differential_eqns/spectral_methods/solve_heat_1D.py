@@ -6,9 +6,12 @@ from equation_solvers.timestep_solvers.rk4_solvers.rk4_fourier import *
 Solve 1D heat equation u_t = nu u_{xx} + f using Fourier coefficients
     -> periodic BCs on [0, L]
     -> evolve u_hat w/ RK4
+
+Fourier form: u_hat_t = -nu*ksq*u_hat + f_hat
 """
 
 def main():
+    
     # --------------------------
     # setup constants, functions
     # --------------------------

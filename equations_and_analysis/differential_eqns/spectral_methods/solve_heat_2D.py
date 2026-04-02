@@ -5,13 +5,11 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import PillowWriter
 
 """
-solve 2D heat equation on a periodic square, Fourier in space, RK4 in time.
+Solve 2D heat equation u_t = nu u_{xx} + f using Fourier coefficients
+    -> periodic BCs
+    -> evolve u_hat w/ RK4
 
-PDE:
-    u_t + c1*u_x + c2*u_y = nu*(u_xx + u_yy)
-
-Fourier form:
-    d/dt u_hat c1*i*kx*u_hat + c2*i*ky*u_hat = nu*(-(kx^2 + ky^2))*u_hat
+Fourier form: u_hat_t = nu*ksq*u_hat + f_hat
 """
 
 def rk4_step(u_hat,t,dt,rhs):
@@ -26,7 +24,7 @@ def rk4_step(u_hat,t,dt,rhs):
     return u_hat + (dt/6.0)*(k1 + 2.0*(k2 + k3) + k4)
 
 
-def l2_norm_periodic_from_uhat(u_hat,Lx,Ly):
+def l2_norm_periodic(u_hat,Lx,Ly):
     """
     Compute ||u||_{L^2([0,Lx]x[0,Ly])} from NumPy FFT coefficients.
 
@@ -113,7 +111,7 @@ def main():
 
     # Running L2 plot: only computed values (no NaNs)
     t_hist = [t[0]]
-    l2_hist = [l2_norm_periodic_from_uhat(u_hat,Lx,Ly)]
+    l2_hist = [l2_norm_periodic(u_hat,Lx,Ly)]
     (line,) = ax2.plot(t_hist,l2_hist,linewidth = 2)
     ax2.set_xlabel("t")
     ax2.set_ylabel(r"$||u(t)||_{L^2}$")
@@ -136,7 +134,7 @@ def main():
         u_hat = rk4_step(u_hat,t[n],dt,rhs) # update with rk4
 
         t_hist.append(t[n + 1])
-        l2_hist.append(l2_norm_periodic_from_uhat(u_hat,Lx,Ly))
+        l2_hist.append(l2_norm_periodic(u_hat,Lx,Ly))
 
         if t[n+1]>=next_movie_time or (n+1)==len(t)-1:
             next_movie_time+=movie_dt # update movie counter

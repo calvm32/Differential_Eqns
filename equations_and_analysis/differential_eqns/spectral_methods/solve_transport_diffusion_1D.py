@@ -40,7 +40,7 @@ def main():
         # Fourier-space RHS: u_hat_t = nu*ksq*u_hat
         return (-1j*c*k + nu*(-k**2))*u_hat + f_hat
 
-    # Fourier wavenumbers for second derivative: u_xx_hat = -(k^2) u_hat
+    # Fourier wavenumbers for second derivative: u_hat_tt = -(k^2) u_hat
     freq = np.fft.fftfreq(N,d=dx)   # cycles per unit length (FFT-ordered)
     k = 2*np.pi*freq                # Fourier wavenumbers
     ksq = -(k**2)

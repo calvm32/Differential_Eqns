@@ -9,7 +9,7 @@ Solve Allen-Cahn equation u_t = kappa*lap(u) + alpha*u - beta*u^3 using Fourier 
     -> IC u(0,x)=u_0(x)
     -> periodic BCs
 
-Fourier form: u_hat' = -kappa*(kx^2 + ky^2)*u_hat + alpha*u_Hat - beta*u_hat^3
+Fourier form: u_hat_t = -kappa*(kx^2 + ky^2)*u_hat + alpha*u_hat - beta*u_hat^3
 """
 
 # ------------
@@ -27,7 +27,8 @@ def rk4_step(u_hat,t,dt,rhs):
     k4 = rhs(t + dt    ,u_hat +     dt*k3)
     return u_hat + (dt/6.0)*(k1 + 2.0*(k2 + k3) + k4)
 
-def l2_norm_periodic_from_uhat(u_hat,Lx,Ly):
+
+def l2_norm_periodic(u_hat,Lx,Ly):
     """
     Compute ||u||_{L^2([0,Lx]x[0,Ly])} from NumPy FFT coefficients.
 
@@ -38,6 +39,7 @@ def l2_norm_periodic_from_uhat(u_hat,Lx,Ly):
     """
     Nx,Ny = u_hat.shape
     return np.sqrt(Lx*Ly)*np.sqrt(np.sum(np.abs(u_hat)**2))/(Nx*Ny)
+    
 
 def main():
 
@@ -125,7 +127,7 @@ def main():
 
     # Running L2 plot: only computed values (no NaNs)
     t_hist = [t[0]]
-    l2_hist = [l2_norm_periodic_from_uhat(u_hat,Lx,Ly)]
+    l2_hist = [l2_norm_periodic(u_hat,Lx,Ly)]
     (line,) = ax2.plot(t_hist,l2_hist,linewidth = 2)
     ax2.set_xlabel("t")
     ax2.set_ylabel(r"$||u(t)||_{L^2}$")
@@ -149,7 +151,7 @@ def main():
         u_hat = rk4_step(u_hat,t[n],dt,rhs) # update with rk4
 
         t_hist.append(t[n + 1])
-        l2_hist.append(l2_norm_periodic_from_uhat(u_hat,Lx,Ly))
+        l2_hist.append(l2_norm_periodic(u_hat,Lx,Ly))
 
         if t[n+1]>=next_movie_time or (n+1)==len(t)-1:
             next_movie_time+=movie_dt # update movie counter

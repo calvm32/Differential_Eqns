@@ -20,6 +20,18 @@ def l2_norm(u,dx):
     # TODO: return sqrt( \sum |u|^2 * dx^2 )
     return np.sqrt(np.sum(np.abs(u)**2)*dx*dx)
 
+def l2_norm_periodic(u_hat,Lx,Ly):
+    """
+    Compute ||u||_{L^2([0,Lx]x[0,Ly])} from NumPy FFT coefficients.
+
+    With NumPy conventions:
+      u = ifftn(u_hat) includes 1/(Nx*Ny).
+    Parseval implies:
+      ||u||_L2 = sqrt(Lx*Ly)/(Nx*Ny)*sqrt(sum|u_hat|^2).
+    """
+    Nx,Ny = u_hat.shape
+    return np.sqrt(Lx*Ly)*np.sqrt(np.sum(np.abs(u_hat)**2))/(Nx*Ny)
+
 def spectral_derivatives(u,dx):
     # Input: u in physical space, shape (N,N)
     # Output: u_x, u_y, lap_u in physical space, each shape (N,N)
