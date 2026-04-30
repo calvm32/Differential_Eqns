@@ -54,13 +54,13 @@ def main():
 
     def rhs(u_hat,f_hat,ksq,nu):
         # Fourier-space RHS: u_hat_t = nu*ksq*u_hat
-        return (-1j*c*(KX+KY) + nu*ksq)*u_hat + f_hat
+        return (-1j*c*(kx+ky) + nu*ksq)*u_hat + f_hat
 
     # Fourier wavenumbers for second derivative: u_xx_hat = -(k^2) u_hat
     kx = 2.0*np.pi*np.fft.fftfreq(N,d=dx) # Fourier wavenumbers
     ky = 2.0*np.pi*np.fft.fftfreq(N,d=dx) # Fourier wavenumbers
-    KX, KY = np.meshgrid(kx, ky, indexing="ij")
-    ksq = -(KX**2 + KY**2)
+    kx, ky = np.meshgrid(kx, ky, indexing="ij")
+    ksq = -(kx**2 + ky**2)
 
     # initialize the Fourier coefficients of u
     u_hat_0 = np.fft.fft2(u0)

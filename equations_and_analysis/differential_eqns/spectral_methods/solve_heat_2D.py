@@ -42,7 +42,7 @@ def main():
     nu = 0.01
     c1, c2 = 1, -2
     t0 = 0.0
-    tf = 5.0
+    T = 5.0
 
     Lx = 2.0*np.pi
     Ly = 2.0*np.pi
@@ -80,7 +80,7 @@ def main():
     dt_visc = 0.1*min(dx,dy)**2/nu
     dt_adv  = 0.1*min(dx,dy)/max(abs(c1),abs(c2))
     dt      =     min(dt_visc,dt_adv)
-    t = np.arange(t0,tf + 0.5*dt,dt)
+    t = np.arange(t0,T + 0.5*dt,dt)
 
     # Initial condition
     rng = np.random.default_rng()  # optionally seed: np.random.default_rng(0)

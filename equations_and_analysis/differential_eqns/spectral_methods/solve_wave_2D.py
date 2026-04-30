@@ -1,32 +1,39 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import matplotlib.pyplot as plt
-from equation_solvers.timestep_solvers.rk4_solvers.rk4_fourier import *
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import PillowWriter
+from equation_solvers.timestep_solvers.misc.wave_fourier import *
 
 """
-Solve Allen-Cahn equation u_t = kappa*lap(u) + alpha*u - beta*u^3 using Fourier coefficients
-    -> IC u(0,x)=u_0(x)
-    -> periodic BCs
+Solve 1D wave equation u_tt = c^2 u_{xx} using Fourier coefficients
+    -> periodic BCs on [-L, L]
 
-Fourier form: u_hat_t = -kappa*(kx^2 + ky^2)*u_hat + alpha*u_hat - beta*u_hat^3
+Fourier form: u_hat_tt = -c^2*ksq*u_hat
 """
 
-# ------------
-# helper funcs
-# ------------
-
-def rk4_step(u_hat,t,dt,rhs):
+def bump_function_2D(X, Y, x0, y0, epsilon):
     """
-    One classical RK4 step for u' = rhs(u,t).
-    Works for scalars, vectors, or arrays (NumPy broadcasting).
+    Evaluate a normalized 2D bump function on a given grid.
+    Inputs:
+        X, Y            : meshgrid arrays (with indexing='ij')
+        x0, y0          : center of the bump
+        epsilon         : radius of support
+    Output:
+        u               : bump function evaluated on (X,Y)
     """
-    k1 = rhs(t         ,u_hat)
-    k2 = rhs(t + 0.5*dt,u_hat + 0.5*dt*k1)
-    k3 = rhs(t + 0.5*dt,u_hat + 0.5*dt*k2)
-    k4 = rhs(t + dt    ,u_hat +     dt*k3)
-    return u_hat + (dt/6.0)*(k1 + 2.0*(k2 + k3) + k4)
-
+    normalize_const=0.4665123931783301 # integrate to 1
+    # Radius shifted and squared
+    radius_sq = (X - x0)**2 + (Y - y0)**2
+    # Initialize
+    u = np.zeros_like(X)
+    # Disk mask
+    disk = radius_sq < epsilon**2
+    # Bump profile
+    u[disk] = np.exp(1.0/((radius_sq[disk]/epsilon**2) - 1.0))
+    # Apply normalization
+    u[disk] /= (normalize_const*epsilon**2)
+    return u
 
 def l2_norm_periodic(u_hat,Lx,Ly):
     """
@@ -39,20 +46,14 @@ def l2_norm_periodic(u_hat,Lx,Ly):
     """
     Nx,Ny = u_hat.shape
     return np.sqrt(Lx*Ly)*np.sqrt(np.sum(np.abs(u_hat)**2))/(Nx*Ny)
-    
+
 
 def main():
-
-    # --------------------------
-    # setup constants, functions
-    # --------------------------
-
     # Parameters
-    kappa = 0.1
-    alpha = 0.5
-    beta = 1.0
+    c = 1.0 
+    nu = 0.01
     t0 = 0.0
-    T = 5.0
+    T = 2.0
 
     Lx = 2.0*np.pi
     Ly = 2.0*np.pi
@@ -61,7 +62,7 @@ def main():
 
     dx = Lx/Nx
     dy = Ly/Ny
-
+    
     movie_dt = 0.05 # how often to update plot
 
     # Grid (periodic, endpoint excluded)
@@ -74,40 +75,40 @@ def main():
     kx = 2.0*np.pi*np.fft.fftfreq(Nx,d = dx)
     ky = 2.0*np.pi*np.fft.fftfreq(Ny,d = dy)
     Laplacian_k = -kx[:,None]**2 - ky[None,:]**2
-
-    # ---------------
-    # solve and graph
-    # ---------------
-
-    def rhs(t,u_hat):
-        # Compute derivatives in Fourier space
-        u_x_hat=1j*kx[:,None]*u_hat # multiply along columns
-        u_y_hat=1j*ky[None,:]*u_hat # multiply along rows
-        
-        # t is unused here, but kept for compatibility with general PDEs.
-
-        phi = np.fft.ifftn(u_hat)
-        phi_cubed = phi**3
-        phi_cubed_hat = np.fft.fftn(phi_cubed)
-        return kappa*Laplacian_k*u_hat + alpha*u_hat - beta*phi_cubed_hat
+    ksq = -(kx**2 + ky**2)
 
     # Time step (simple diffusion stability-ish choice)
-    dt_visc = 0.1*min(dx,dy)**2/kappa
-    dt_adv  = 0.1*min(dx,dy)/max(abs(alpha),abs(beta))
+    dt_visc = 0.1*min(dx,dy)**2/nu
+    dt_adv  = 0.1*min(dx,dy)
     dt      =     min(dt_visc,dt_adv)
     t = np.arange(t0,T + 0.5*dt,dt)
 
+    # -----------------
     # Initial condition
-    rng = np.random.default_rng()  # optionally seed: np.random.default_rng(0)
-    sigma = 0.01
-    u0 = sigma*np.random.randn(Nx,Ny)
+    # -----------------
+    
+    # Add three bump functions at different locations
+    x0, y0, epsilon = 0.5, -0.5, 0.1
+    v0 = bump_function_2D(X,Y,x0,y0,epsilon)
+    x0, y0, epsilon = 0.5, 0.5, 0.2
+    v0 = v0 + bump_function_2D(X,Y,x0,y0,epsilon)
+    x0, y0, epsilon = -0.5, 0.5, 0.3
+    v0 = v0 + bump_function_2D(X,Y,x0,y0,epsilon)
 
-    u_hat = np.fft.fftn(u0)
+    u0 = np.zeros((Nx, Ny), dtype=complex)
+    u_hat_0 = np.fft.fft(u0)
+
+    # get the next time step to start our timestep solver
+    u_hat_1 = u_hat_0 + dt*np.fft.fft(v0) + c**2*ksq*dt*u_hat_0
+
+    u_hat = np.zeros((Nx, Ny, len(t)), dtype=complex)
+    u_hat[:,:, 0] = u_hat_0
+    u_hat[:,:, 1] = u_hat_1
 
     # Plot setup
     fig,(ax1,ax2) = plt.subplots(1,2,figsize = (14,6))
 
-    u_phys = np.real(np.fft.ifftn(u_hat))
+    u_phys = np.real(np.fft.ifftn(u_hat_0))
     im = ax1.imshow(
         u_phys.T,
         origin = "lower",
@@ -127,7 +128,7 @@ def main():
 
     # Running L2 plot: only computed values (no NaNs)
     t_hist = [t[0]]
-    l2_hist = [l2_norm_periodic(u_hat,Lx,Ly)]
+    l2_hist = [l2_norm_periodic(u_hat_1,Lx,Ly)]
     (line,) = ax2.plot(t_hist,l2_hist,linewidth = 2)
     ax2.set_xlabel("t")
     ax2.set_ylabel(r"$||u(t)||_{L^2}$")
@@ -138,25 +139,26 @@ def main():
 
     next_movie_time = t0
     save_gif=True
-    gif_filename="./heat2D.gif"
+    gif_filename="heat2D.gif"
     fps=20
-
-    print(f"Saving GIF to: {gif_filename}")
 
     if save_gif:
         writer=PillowWriter(fps=fps)
         writer.setup(fig,gif_filename,dpi=100)
     
-    for n in range(len(t)-1):
-        u_hat = rk4_step(u_hat,t[n],dt,rhs) # update with rk4
+    
+    for n in range(len(t)-2):
+
+        # Compute the Fourier coefficients of u
+        u_hat[:,:, n+ 1] = 2*u_hat[:,:, n] - u_hat[:,:, n- 1] + (c**2)*ksq*(dt**2)*u_hat[:,:, n]
 
         t_hist.append(t[n + 1])
-        l2_hist.append(l2_norm_periodic(u_hat,Lx,Ly))
+        l2_hist.append(l2_norm_periodic(u_hat[:,:,n+1],Lx,Ly))
 
         if t[n+1]>=next_movie_time or (n+1)==len(t)-1:
             next_movie_time+=movie_dt # update movie counter
             
-            u_phys = np.real(np.fft.ifftn(u_hat))
+            u_phys = np.real(np.fft.ifftn(u_hat[:, :, n+1]))
             im.set_data(u_phys.T)
             ax1.set_title(f"t = {t[n + 1]:.3f}")
 
@@ -175,5 +177,5 @@ def main():
         writer.finish() # Close gif file
     plt.show()
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
