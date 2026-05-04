@@ -1,2 +1,6 @@
 **/__pycache__
 **/._.DS_Store
+
+**.venv/
+
+**DEs.egg-info/
